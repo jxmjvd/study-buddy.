@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyBuddy - Chat & Learn</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: black;
+      transition: 0.3s;
+    }
+
+    header {
+      background-color: #0066cc;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      background-color: #f0f0f0;
+      padding: 1rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .subject {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      background-color: #f9f9f9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #eee;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 0.5rem 1rem;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .dark-mode {
+      background-color: #121212;
+      color: white;
+    }
+
+    .dark-mode header {
+      background-color: #333;
+    }
+
+    .dark-mode nav {
+      background-color: #1e1e1e;
+    }
+
+    .dark-mode .subject {
+      background-color: #2a2a2a;
+      border-color: #444;
+    }
+
+    /* Chatbot styles */
+    .chat-container {
+      max-width: 800px;
+      margin: auto;
+      border: 2px solid #ccc;
+      padding: 1rem;
+      border-radius: 10px;
+      background-color: #fdfdfd;
+    }
+
+    .chat-box {
+      height: 250px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background-color: #fff;
+    }
+
+    .chat-bubble {
+      margin-bottom: 10px;
+      padding: 0.5rem;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .user {
+      background-color: #d1e7ff;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    .bot {
+      background-color: #e8e8e8;
+      text-align: left;
+      margin-right: auto;
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 0.5rem;
+    }
+
+    button.send-btn {
+      padding: 0.5rem 1rem;
+      margin-left: 5px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .dark-mode .chat-container,
+    .dark-mode .chat-box {
+      background-color: #1f1f1f;
+      border-color: #444;
+    }
+
+    .dark-mode .user {
+      background-color: #375a7f;
+    }
+
+    .dark-mode .bot {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <button class="toggle-btn" onclick="toggleMode()">Toggle Mode</button>
+
+  <header>
+    <h1>📘 StudyBuddy</h1>
+    <p>Your smart companion to learn and revise</p>
+  </header>
+
+  <nav>
+    <a href="#math">Math</a>
+    <a href="#science">Science</a>
+    <a href="#history">History</a>
+    <a href="#chat">ChatBot</a>
+  </nav>
+
+  <section>
+    <div class="subject" id="math">
+      <h2>🧮 Math</h2>
+      <p>Explore algebra, geometry, calculus and more with helpful examples and quizzes.</p>
+    </div>
+
+    <div class="subject" id="science">
+      <h2>🔬 Science</h2>
+      <p>Learn about physics, chemistry, biology with diagrams and animated concepts.</p>
+    </div>
+
+    <div class="subject" id="history">
+      <h2>📜 History</h2>
+      <p>Read stories of the past — world wars, freedom struggles, and ancient civilizations.</p>
+    </div>
+
+    <div class="chat-container" id="chat">
+      <h2>💬 StudyBuddy Chatbot</h2>
+      <div class="chat-box" id="chatBox"></div>
+      <input type="text" id="userInput" placeholder="Ask me a question..." />
+      <button class="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>Made by Jazim Javid • © 2025 StudyBuddy</p>
+  </footer>
+
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendMessage("user", message);
+      input.value = "";
+
+      setTimeout(() => {
+        const reply = getBotReply(message);
+        appendMessage("bot", reply);
+      }, 500);
+    }
+
+    function appendMessage(sender, text) {
+      const chatBox = document.getElementById("chatBox");
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `chat-bubble ${sender}`;
+      msgDiv.textContent = text;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function getBotReply(msg) {
+      msg = msg.toLowerCase();
+      if (msg.includes("photosynthesis")) return "Photosynthesis is how plants make food using sunlight.";
+      if (msg.includes("2 + 2")) return "2 + 2 = 4";
+      if (msg.includes("world war")) return "World War II was from 1939 to 1945 involving many countries.";
+      if (msg.includes("pi")) return "Pi is a mathematical constant approx. equal to 3.14159.";
+      if (msg.includes("hi") || msg.includes("hello")) return "Hello! Ask me anything about your studies.";
+      return "I'm still learning. Try asking about science, math or history!";
+    }
+  </script>
+</body>
+</html>
